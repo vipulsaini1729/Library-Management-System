@@ -1,13 +1,17 @@
 package com.example.librarymanagementsystem.Controllers;
 
+import com.example.librarymanagementsystem.Enums.Genre;
 import com.example.librarymanagementsystem.Models.Book;
 import com.example.librarymanagementsystem.RequestDto.AddBookRequestDto;
+import com.example.librarymanagementsystem.ResponseDto.BookResponseDto;
 import com.example.librarymanagementsystem.Services.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/book")
@@ -36,5 +40,11 @@ public class BookController {
         catch (Exception e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/getByGenre")
+    public ResponseEntity getBookListByGenre(@RequestParam("genre") Genre genre){
+        List<BookResponseDto> responseDtoList = bookService.getBookListByGenre(genre);
+        return new ResponseEntity<>(responseDtoList,HttpStatus.OK);
     }
 }
